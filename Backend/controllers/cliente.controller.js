@@ -1,5 +1,6 @@
 const Cliente = require('../models/cliente.js');
 const bcrypt = require('bcrypt-nodejs');
+const jwt = require('../helpers/jwt.js');
 
 
 
@@ -32,7 +33,44 @@ const registroCliente = async function (req, res){
 };
 
 
+const loginCliente = async function(req, res) {
+    const data = req.body;
+    let cliente_arr = [];
+
+    cliente_arr = await Cliente.find({email: data.email});
+
+    if(cliente_arr.length == 0 ){
+        res.status(200).send({message: 'no se encontro el correo'});
+    } else {
+        const user = cliente_arr[0];
+
+        bcrypt.compare(data.password, user.password, async function(error, check){
+            if(check){
+                res.status(200).send({
+                    data: user,
+                    token: jwt.createToken(user)
+                });
+            }else {
+                res.status(200).send({message: 'la contraseña no conincide'});
+            };
+        });
+    };
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 module.exports = {
     registroCliente,
+    loginCliente,
 };
