@@ -57,20 +57,27 @@ const loginCliente = async function(req, res) {
     };
 };
 
+const listar_cliente_filtro_admin = async function(req, res){
+    
+    let tipo = req.params['tipo']; //tipo de filtro apellido
+    let filtro = req.params['filtro']; // filtro en si osea el valor "zamora"
 
-
-
-
-
-
-
-
-
-
-
-
+    if(tipo = null || tipo == 'null'){
+        let reg = await Cliente.find();
+        res.status(200).send({data:reg});
+    } else {
+        if(tipo == 'apellido'){
+            let reg = await Cliente.find({apellido: new RegExp(filtro, 'i')});
+            res.status(200).send({data:reg});
+        } else if (tipo == 'correo') {
+            let reg = await Cliente.find({email: new RegExp(filtro, 'i')});
+            res.status(200).send({data:reg});
+        };
+    };
+};
 
 module.exports = {
     registroCliente,
     loginCliente,
+    listar_cliente_filtro_admin,
 };

@@ -1,0 +1,4 @@
+instalacion de dependencias ng-boostrap
+
+npm i @angular/localize@11.2.12  --legacy-peer-deps
+npm install  @ng-bootstrap/ng-bootstrap@9.1.0 --legacy-peer-deps
